@@ -1,0 +1,46 @@
+version: '3'
+
+tasks:
+  up:
+    desc: "Starts the docker containers"
+    cmds:
+      - docker compose up -d
+  bun_install:
+    desc: "Installs the bun"
+    cmds:
+      - docker compose exec app bash -i -c "bun install"
+  dev:
+    desc: "Starts the application in development mode"
+    cmds:
+      - docker compose exec app bash -i -c "bun run dev"
+  ssh:
+    desc: 'Login to the container'
+    cmds:
+      - docker compose exec app bash -i
+  start:
+    desc: "Starts the docker containers"
+    cmds:
+      - task up
+      - task bun_install
+      - task dev
+  down:
+    desc: "Stops the docker containers"
+    cmds:
+      - docker compose down
+  test:
+    desc: 'Runs the vitest'
+    cmds:
+      - docker compose exec app bash -i -c "bun run test"
+  lint:
+      desc: 'Run eslint'
+      cmds:
+      - docker compose exec app bash -i -c "bun run lint"
+  format:
+    desc: 'Run prettier and stylelint'
+    cmds:
+      - docker compose exec app bash -i -c "bun run format"
+      - docker compose exec app bash -i -c "bun run stylelint:fix"
+  check:
+    desc: 'run svelte-check'
+    cmds:
+      - docker compose exec app bash -i -c "bun run check"

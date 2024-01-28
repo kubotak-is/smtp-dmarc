@@ -1,0 +1,47 @@
+{
+  "name": "my-app",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "test": "vitest",
+    "lint": "prettier --check . && eslint . && npm run stylelint",
+    "format": "prettier --write .&& eslint --fix .",
+    "stylelint": "stylelint --ignore-path .gitignore ./**/*.{css,scss,svelte}",
+    "stylelint:fix": "stylelint --fix --ignore-path .gitignore ./**/*.{css,scss,svelte}"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-auto": "^3.0.0",
+    "@sveltejs/kit": "^2.0.0",
+    "@sveltejs/vite-plugin-svelte": "^3.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.19.1",
+    "@typescript-eslint/parser": "^6.19.1",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-storybook": "^0.6.15",
+    "eslint-plugin-svelte": "^2.35.1",
+    "postcss-html": "^1.6.0",
+    "prettier": "^3.2.4",
+    "prettier-plugin-svelte": "^3.1.2",
+    "stylelint": "^16.2.0",
+    "stylelint-config-recess-order": "^4.4.0",
+    "stylelint-config-recommended-scss": "^14.0.0",
+    "stylelint-config-standard": "^36.0.0",
+    "stylelint-scss": "^6.1.0",
+    "svelte": "^4.2.7",
+    "svelte-check": "^3.6.0",
+    "tslib": "^2.4.1",
+    "typescript": "^5.0.0",
+    "vite": "^5.0.3",
+    "vitest": "^1.2.0"
+  },
+  "type": "module",
+  "dependencies": {
+    "sass": "^1.70.0",
+    "svelte-adapter-bun": "^0.5.1"
+  }
+}
