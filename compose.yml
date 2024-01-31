@@ -1,0 +1,32 @@
+version: '3'
+networks:
+  backend:
+    driver: bridge
+services:
+  app:
+    build: .
+    container_name: app
+    ports:
+      - 3000:3000
+    volumes:
+      - ./:/app
+    networks:
+      - backend
+    tty: true
+    depends_on:
+      - mongo
+  mongo:
+    container_name: mongo
+    image: mongo:6.0.13-jammy
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - 27017:27017
+    networks:
+      - backend
+    volumes:
+      - db:/data
+volumes:
+  db:

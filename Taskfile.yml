@@ -5,24 +5,41 @@ tasks:
     desc: "Starts the docker containers"
     cmds:
       - docker compose up -d
-  bun_install:
-    desc: "Installs the bun"
+  npm_install:
+    desc: "Installs the npm"
     cmds:
-      - docker compose exec app bash -i -c "bun install"
-  dev:
-    desc: "Starts the application in development mode"
+      - docker compose exec app bash -i -c "npm install"
+    sources:
+      - package.json
+      - package-lock.json
+    generates:
+      - node_modules/**
+  build:
+    desc: "Builds the application"
     cmds:
-      - docker compose exec app bash -i -c "bun run dev"
+      - docker compose exec app bash -i -c "npm run build"
+    sources:
+      - src/**/*.svelte
+      - src/**/*.ts
+      - src/**/*.html
+      - src/**/*.pcss
+    generates:
+      - build/**
   ssh:
     desc: 'Login to the container'
     cmds:
       - docker compose exec app bash -i
-  start:
-    desc: "Starts the docker containers"
+  dev:
+    desc: "Starts the application in development mode"
+    deps: [up, npm_install]
     cmds:
-      - task up
-      - task bun_install
-      - task dev
+      - docker compose exec app bash -i -c "npm run dev"
+  start:
+    desc: "Starts the application in production mode"
+    deps: [up, npm_install, build]
+    cmds:
+      - open http://localhost:3000
+      - docker compose exec app bash -i -c "node build/index.js"
   down:
     desc: "Stops the docker containers"
     cmds:
@@ -30,17 +47,17 @@ tasks:
   test:
     desc: 'Runs the vitest'
     cmds:
-      - docker compose exec app bash -i -c "bun run test"
+      - docker compose exec app bash -i -c "npm run test"
   lint:
       desc: 'Run eslint'
       cmds:
-      - docker compose exec app bash -i -c "bun run lint"
+      - docker compose exec app bash -i -c "npm run lint"
   format:
     desc: 'Run prettier and stylelint'
     cmds:
-      - docker compose exec app bash -i -c "bun run format"
-      - docker compose exec app bash -i -c "bun run stylelint:fix"
+      - docker compose exec app bash -i -c "npm run format"
+      - docker compose exec app bash -i -c "npm run stylelint:fix"
   check:
     desc: 'run svelte-check'
     cmds:
-      - docker compose exec app bash -i -c "bun run check"
+      - docker compose exec app bash -i -c "npm run check"
