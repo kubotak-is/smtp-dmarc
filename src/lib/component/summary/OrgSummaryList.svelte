@@ -13,6 +13,7 @@
         <th class="table-cell-fit">Total</th>
         <th class="text-center">SPF Rate</th>
         <th class="text-center">DKIM Rate</th>
+        <th class="text-center">DMARC Rate</th>
         <th class="table-cell-fit"></th>
       </tr>
     </thead>
@@ -26,6 +27,9 @@
           </td>
           <td>
             <Rate rate={row.dkimRate} />
+          </td>
+          <td>
+            <Rate rate={row.dmarcRate} />
           </td>
           <td class="table-cell-fit">
             <a

@@ -6,13 +6,13 @@
 
   $: option = {
     title: {
-      text: 'Daily SPF and DKIM Rate'
+      text: 'Daily SPF, DKIM and DMARC Rate'
     },
     tooltip: {
       trigger: 'axis'
     },
     legend: {
-      data: ['SPF', 'DKIM']
+      data: ['SPF', 'DKIM', 'DMARC']
     },
     grid: {
       left: '3%',
@@ -38,6 +38,11 @@
         name: 'DKIM',
         type: 'line',
         data: summary.map((s) => s.dkimRate)
+      },
+      {
+        name: 'DMARC',
+        type: 'line',
+        data: summary.map((s) => s.dmarcRate)
       }
     ]
   }

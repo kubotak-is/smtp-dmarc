@@ -101,6 +101,11 @@ async function aggregateSpfAndDkimRate(mongodb: MongoClient, startDate: string, 
             $sum: {
               $cond: [{ $eq: ['$dkim', 'pass'] }, 1, 0]
             }
+          },
+          dmarcPass: {
+            $sum: {
+              $cond: [{ $or: [{ $eq: ['$spf', 'pass'] }, { $eq: ['$dkim', 'pass'] }] }, 1, 0]
+            }
           }
         }
       },
@@ -113,7 +118,8 @@ async function aggregateSpfAndDkimRate(mongodb: MongoClient, startDate: string, 
           spfPassCount: '$spfPass',
           spfRate: { $round: [{ $multiply: [{ $divide: ['$spfPass', '$total'] }, 100] }, 1] },
           dkimPassCount: '$dkimPass',
-          dkimRate: { $round: [{ $multiply: [{ $divide: ['$dkimPass', '$total'] }, 100] }, 1] }
+          dkimRate: { $round: [{ $multiply: [{ $divide: ['$dkimPass', '$total'] }, 100] }, 1] },
+          dmarcRate: { $round: [{ $multiply: [{ $divide: ['$dmarcPass', '$total'] }, 100] }, 1] }
         }
       }
     ]
@@ -175,6 +181,11 @@ export const aggregateSpfAndDkimRateForDaily = async (
             $sum: {
               $cond: [{ $eq: ['$dkim', 'pass'] }, 1, 0]
             }
+          },
+          dmarcPass: {
+            $sum: {
+              $cond: [{ $or: [{ $eq: ['$spf', 'pass'] }, { $eq: ['$dkim', 'pass'] }] }, 1, 0]
+            }
           }
         }
       },
@@ -184,7 +195,8 @@ export const aggregateSpfAndDkimRateForDaily = async (
           _id: 0,
           date: '$_id',
           spfRate: { $round: [{ $multiply: [{ $divide: ['$spfPass', '$total'] }, 100] }, 2] },
-          dkimRate: { $round: [{ $multiply: [{ $divide: ['$dkimPass', '$total'] }, 100] }, 2] }
+          dkimRate: { $round: [{ $multiply: [{ $divide: ['$dkimPass', '$total'] }, 100] }, 2] },
+          dmarcRate: { $round: [{ $multiply: [{ $divide: ['$dmarcPass', '$total'] }, 100] }, 2] }
         }
       },
       // 日付でソート
@@ -252,6 +264,11 @@ export const aggregateSpfAndDkimRateForDailyFilterByOrgName = async (
             $sum: {
               $cond: [{ $eq: ['$dkim', 'pass'] }, 1, 0]
             }
+          },
+          dmarcPass: {
+            $sum: {
+              $cond: [{ $or: [{ $eq: ['$spf', 'pass'] }, { $eq: ['$dkim', 'pass'] }] }, 1, 0]
+            }
           }
         }
       },
@@ -261,7 +278,8 @@ export const aggregateSpfAndDkimRateForDailyFilterByOrgName = async (
           _id: 0,
           date: '$_id',
           spfRate: { $round: [{ $multiply: [{ $divide: ['$spfPass', '$total'] }, 100] }, 2] },
-          dkimRate: { $round: [{ $multiply: [{ $divide: ['$dkimPass', '$total'] }, 100] }, 2] }
+          dkimRate: { $round: [{ $multiply: [{ $divide: ['$dkimPass', '$total'] }, 100] }, 2] },
+          dmarcRate: { $round: [{ $multiply: [{ $divide: ['$dmarcPass', '$total'] }, 100] }, 2] }
         }
       },
       // 日付でソート
